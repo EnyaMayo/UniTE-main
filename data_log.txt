@@ -1,0 +1,108 @@
+Loaded DataFrame from ../UniTE_h5_dataset/foursquare_nyc.h5
+               seq_i            lng  ...            tod        weekday
+count  227428.000000  227428.000000  ...  227428.000000  227428.000000
+mean        2.016827     -73.974556  ...       0.579940       2.977395
+std         3.597938       0.086209  ...       0.243541       1.984483
+min         0.000000     -74.274766  ...       0.000000       0.000000
+25%         0.000000     -74.000633  ...       0.395058       1.000000
+50%         1.000000     -73.983479  ...       0.593663       3.000000
+75%         2.000000     -73.945709  ...       0.783356       5.000000
+max       106.000000     -73.683825  ...       0.999988       6.000000
+
+[8 rows x 8 columns]
+num_road     38333
+num_class     1084
+dtype: int64
+Dumped dataset info into ./cache/meta/foursquare_nyc/stat.h5
+Global max_trip_len: 107
+Before normalize - arrs shape: (5423, 107, 9)
+arrs has nan: False
+After normalize - arrs has nan: False
+Saved meta to cache/meta/foursquare_nyc/trip_0.npz
+Loaded meta from cache/meta/foursquare_nyc/trip_0.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Global max_trip_len: 107
+Before normalize - arrs shape: (757, 28, 9)
+arrs has nan: False
+After normalize - arrs has nan: False
+Saved meta to cache/meta/foursquare_nyc/trip_1.npz
+Loaded meta from cache/meta/foursquare_nyc/trip_1.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Global max_trip_len: 107
+Before normalize - arrs shape: (757, 37, 9)
+arrs has nan: False
+After normalize - arrs has nan: False
+Saved meta to cache/meta/foursquare_nyc/trip_2.npz
+Loaded meta from cache/meta/foursquare_nyc/trip_2.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Done!
+Loaded DataFrame from ../UniTE_h5_dataset/foursquare_nyc.h5
+               seq_i            lng  ...            tod        weekday
+count  227428.000000  227428.000000  ...  227428.000000  227428.000000
+mean        2.016827     -73.974556  ...       0.579940       2.977395
+std         3.597938       0.086209  ...       0.243541       1.984483
+min         0.000000     -74.274766  ...       0.000000       0.000000
+25%         0.000000     -74.000633  ...       0.395058       1.000000
+50%         1.000000     -73.983479  ...       0.593663       3.000000
+75%         2.000000     -73.945709  ...       0.783356       5.000000
+max       106.000000     -73.683825  ...       0.999988       6.000000
+
+[8 rows x 8 columns]
+num_road     38333
+num_class     1084
+dtype: int64
+Dumped dataset info into ./cache/meta/foursquare_nyc/stat.h5
+Global max_trip_len: 107
+Loaded meta from cache/meta/foursquare_nyc/trip_0.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Loaded meta from cache/meta/foursquare_nyc/trip_1.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Loaded meta from cache/meta/foursquare_nyc/trip_2.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Query trip num: 100
+Target trip num: 100
+Negative trip num: 200
+Loaded DataFrame from ../UniTE_h5_dataset/foursquare_nyc.h5
+               seq_i            lng  ...            tod        weekday
+count  227428.000000  227428.000000  ...  227428.000000  227428.000000
+mean        2.016827     -73.974556  ...       0.579940       2.977395
+std         3.597938       0.086209  ...       0.243541       1.984483
+min         0.000000     -74.274766  ...       0.000000       0.000000
+25%         0.000000     -74.000633  ...       0.395058       1.000000
+50%         1.000000     -73.983479  ...       0.593663       3.000000
+75%         2.000000     -73.945709  ...       0.783356       5.000000
+max       106.000000     -73.683825  ...       0.999988       6.000000
+
+[8 rows x 8 columns]
+num_road     38333
+num_class     1084
+dtype: int64
+Dumped dataset info into ./cache/meta/foursquare_nyc/stat.h5
+Global max_trip_len: 107
+Loaded meta from cache/meta/foursquare_nyc/trip_0.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Loaded meta from cache/meta/foursquare_nyc/trip_1.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Loaded meta from cache/meta/foursquare_nyc/trip_2.npz
+keys: ['trips', 'lengths', 'trip_ids']
+Query trip num: 100
+Target trip num: 100
+Negative trip num: 200
+Saved meta to cache/meta/foursquare_nyc/ksegsimidx-100-200_0.npz
+Loaded meta from cache/meta/foursquare_nyc/ksegsimidx-100-200_0.npz
+keys: ['qry_idx', 'tgt_idx', 'neg_idx']
+Global max_trip_len: 107
+Query trip num: 100
+Target trip num: 100
+Negative trip num: 200
+Saved meta to cache/meta/foursquare_nyc/ksegsimidx-100-200_1.npz
+Loaded meta from cache/meta/foursquare_nyc/ksegsimidx-100-200_1.npz
+keys: ['qry_idx', 'tgt_idx', 'neg_idx']
+Global max_trip_len: 107
+Query trip num: 100
+Target trip num: 100
+Negative trip num: 200
+Saved meta to cache/meta/foursquare_nyc/ksegsimidx-100-200_2.npz
+Loaded meta from cache/meta/foursquare_nyc/ksegsimidx-100-200_2.npz
+keys: ['qry_idx', 'tgt_idx', 'neg_idx']
+Done!

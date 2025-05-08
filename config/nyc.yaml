@@ -12,9 +12,6 @@
         output_size: 128
         con_feats: [2, 3, 4, 5, 6]
         dis_feats: [1]
-        # num_embeds: [num_roads]
-        # (unite) pshao8@DS209198:~/poi/UniTE-main$ python -c "import pandas as pd; print(pd.read_hdf('../UniTE_h5_dataset/foursquare_nyc.h5', 'road_info').shape)"
-        # (38333, 4)
         num_embeds: [38333]
   pretrain:
     load: false
@@ -41,18 +38,5 @@
         num_epoch: 1
         sim_indices:
           - ksegsimidx-100-200
-        # metric_type: classification
-        # dataset_name: foursquare_nyc  # 保存npz轨迹嵌入的地址./save_traj_embedding/{dataset_name}
-      predictor: {}
-  # downstream:
-  #   - task: search
-  #     select_models: [0]
-  #     eval_set: 2
-  #     config:
-  #       batch_size: 32
-  #       sim_indices:
-  #         - ksegsimidx-100-200
-  #       # metric_type: classification
-  #       dataset_name: foursquare_nyc  # 已添加
-  #     predictor: {}
+        predictor: {}
   repeat: 1

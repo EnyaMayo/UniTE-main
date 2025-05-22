@@ -1,0 +1,53 @@
+- repeat: 1
+  data:
+    name: foursquare_nyc
+    meta:
+      - type: trip
+  models:
+    - name: transformer_encoder
+      config:
+        d_model: 128
+        num_heads: 8 
+        num_layers: 4
+        output_size: 128
+        con_feats: [0, 3, 4, 7]         # tod, lng, lat, seconds
+        dis_feats: [1, 2, 5, 6]         # road, road_prop, weekday, seq_i
+        num_embeds: [29343, 1, 7, 106]  # 用实际npz统计 ./test.py统计
+    - name: transformer_decoder
+      config:
+        encode_size: 128
+        d_model: 128
+        hidden_size: 256
+        num_layers: 2
+        num_heads: 8
+  pretrain:
+    load: false
+    loss:
+      name: autoreg
+      config:
+        out_dis:
+          feats: [1, 2, 5, 6]
+          num_embeds: [29343, 1, 7, 106]
+        out_con_feats: [0, 3, 4, 7]
+        latent_size: 128
+        dis_weight: 1.0
+        con_weight: 1.0
+    trainer:
+      name: generative
+      config:
+        num_epoch: 5
+        batch_size: 16
+        lr: 1.0e-3
+        enc_meta_i: [0]
+        rec_meta_i: [0]
+  # downstream: []
+  downstream:
+    - task: search
+      select_models: [0]
+      config:
+        batch_size: 64
+        num_epoch: 200    # Search 不训练，设为1即可
+        lr: 0.001       # 学习率，随便填一个不会用到
+        # triplet_indices: ksegsimidx-100-200
+      predictor: {}
+      eval_set: 2   # 2 代表 test 集，0/1 分别是 train/val

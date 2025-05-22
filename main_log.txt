@@ -1,0 +1,37 @@
+Datetime key t2025_04_18_16_31_15
+
+==============================
+====1/1 experiment entry====
+
+----1/1 experiment entry, 1/1 repeat----
+
+Transformer-1,2,3,4,5,6-d128-h128-l4-h8-pass size 21.3427734375 MB
+triplet-margin1.0-latent128 size 0.0 MB
+Loaded meta from cache/meta/meta/foursquare_nyc/trip_0.npz
+keys: ['trips', 'lengths']
+Loaded meta from cache/meta/meta/foursquare_nyc/ksegsimidx-100-200_0.npz
+keys: ['qry_idx', 'tgt_idx', 'neg_idx']
+Saved model Transformer-1,2,3,4,5,6-d128-h128-l4-h8-pass
+Saved model triplet-margin1.0-latent128
+
+....1/1 experiment entry, 1/1 repeat, 1/1 downstream task ....
+
+Similar Trajectory Search do not require training.
+Similar Trajectory Search do not require training.
+Loaded trip_0.npz: 5423 trips, embed shape: (5423, 128)
+Loaded meta from cache/meta/meta/foursquare_nyc/trip_1.npz
+keys: ['trips', 'lengths']
+Loaded trip_1.npz: 757 trips, embed shape: (757, 128)
+Loaded meta from cache/meta/meta/foursquare_nyc/trip_2.npz
+keys: ['trips', 'lengths']
+Loaded trip_2.npz: 757 trips, embed shape: (757, 128)
+Total trips: 6937
+Saving embeddings to save_traj_embedding/foursquare_nyc.npy, shape: (6937, 128)
+Loaded meta from cache/meta/meta/foursquare_nyc/ksegsimidx-100-200_2.npz
+keys: ['qry_idx', 'tgt_idx', 'neg_idx']
+macro_f1     0.013514
+macro_rec    0.007576
+acc@1        0.121212
+acc@5        0.242424
+acc@10       0.393939
+dtype: float64

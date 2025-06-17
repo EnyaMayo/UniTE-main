@@ -30,8 +30,8 @@ from utils import k_shortest_paths, latlon2quadkey
 pd.options.mode.chained_assignment = None
 CLASS_COL = 'driver'
 SET_NAMES = [(0, 'train'), (1, 'val'), (2, 'test')]
-MIN_TRIP_LEN = 6
-MAX_TRIP_LEN = 120
+MIN_TRIP_LEN = 1
+MAX_TRIP_LEN = 9999
 TRIP_COLS = ['tod', 'road', 'road_prop', 'lng', 'lat', 'weekday', 'seq_i', 'seconds']
 
 DATASET_PATH = os.environ['DATASET_PATH']
@@ -246,6 +246,17 @@ class Data:
 
         
         if meta_type == 'trip':
+            # === 统计所有 split 的全局最大轨迹长度 ===
+            global_max_trip_len = 0
+            for split_idx in range(3):
+                select_trip_id_tmp = self.valid_trips[split_idx]
+                trips_tmp = self.trips[self.trips['trip'].isin(select_trip_id_tmp)]
+                if not trips_tmp.empty:
+                    max_len_tmp = trips_tmp.groupby('trip').size().max()
+                    if max_len_tmp > global_max_trip_len:
+                        global_max_trip_len = max_len_tmp
+            print(f"Global max_trip_len across all splits: {global_max_trip_len}")
+            # === 用全局最大长度 pad 当前 split ===
             select_trip_id = trips['trip'].unique()
             arrs, valid_lens, trip_ids = [], [], []
             for trip_id, group in tqdm(trips.groupby('trip'), desc='Gathering trips', total=len(select_trip_id)):
@@ -257,8 +268,8 @@ class Data:
                 else:
                     offset = (offset - offset[0]) / (offset[-1] - offset[0]) * 2 - 1
                 arr = np.append(arr, offset.reshape(-1, 1), 1)
-                if valid_len < max_trip_len:
-                    arr = np.concatenate([arr, np.repeat(arr[-1:], max_trip_len - valid_len, axis=0)], 0)
+                if valid_len < global_max_trip_len:
+                    arr = np.concatenate([arr, np.repeat(arr[-1:], global_max_trip_len - valid_len, axis=0)], 0)
                 arrs.append(arr)
                 valid_lens.append(valid_len)
                 trip_ids.append(trip_id)

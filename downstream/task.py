@@ -159,6 +159,22 @@ class Search(Trainer):
         if not all_trips:
             raise ValueError("No trip_*.npz files found for embedding generation.")
         
+        # 1. 找到所有split的最大轨迹长度
+        max_seq_len = max(arr.shape[1] for arr in all_trips)
+        num_features = all_trips[0].shape[2]
+
+        # 2. 对每个split做padding
+        for i in range(len(all_trips)):
+            arr = all_trips[i]
+            if arr.shape[1] < max_seq_len:
+                # 对每个轨迹补0到max_seq_len
+                pad_width = ((0, 0), (0, max_seq_len - arr.shape[1]), (0, 0))
+                all_trips[i] = np.pad(arr, pad_width, mode='constant')
+            elif arr.shape[1] > max_seq_len:
+                # 如果有比max_seq_len还长的，裁剪
+                all_trips[i] = arr[:, :max_seq_len, :]
+
+        # 3. 现在可以安全拼接
         trips = np.concatenate(all_trips, axis=0)
         lengths = np.concatenate(all_lengths, axis=0)
         trip_ids = np.concatenate(all_trip_ids, axis=0)

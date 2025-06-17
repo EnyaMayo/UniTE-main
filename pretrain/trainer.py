@@ -132,17 +132,20 @@ class Trainer:
 
         train_logs = []
         desc_text = f'{desc}, avg loss %.4f'
+        best_loss = float('inf')
         with trange(start+1, self.num_epoch, desc=desc_text % 0.0) as tbar:
             for epoch_i in tbar:
                 s_time = time()
                 epoch_avg_loss = self.train_epoch(epoch_i)
                 e_time = time()
-                tbar.set_description(desc_text % epoch_avg_loss)
                 train_logs.append([epoch_i, e_time - s_time, epoch_avg_loss])
-
+                tbar.set_description(desc_text % epoch_avg_loss)  # 动态更新loss
+                if epoch_avg_loss < best_loss:
+                    best_loss = epoch_avg_loss
+                    print(f'New best avg loss: {best_loss:.4f} at epoch {epoch_i}, saving best model...')
+                    self.save_models('best')
                 if self.cache_epoches and epoch_i < self.num_epoch - 1:
                     self.save_models(epoch_i)
-
         train_logs = pd.DataFrame(train_logs, columns=['epoch', 'time', 'loss'])
         return train_logs
 
@@ -153,6 +156,7 @@ class Trainer:
                                desc=f'-->Traverse batches', total=self.num_iter, leave=False):
             self.optimizer.zero_grad()
             loss = self.forward_loss(batch_meta)
+            # print("DEBUG: loss =", loss.item())
             with torch.autograd.detect_anomaly():
                 loss.backward(retain_graph=True)
             self.optimizer.step()
@@ -660,22 +664,20 @@ class ADMMTrainer(GenerativeTrainer):
 
         train_logs = []
         desc_text = f'{desc}, avg loss %.4f'
+        best_loss = float('inf')
         with trange(start+1, self.num_epoch, desc=desc_text % 0.0) as tbar:
             for epoch_i in tbar:
                 s_time = time()
                 epoch_avg_loss = self.train_epoch(epoch_i)
                 e_time = time()
-                tbar.set_description(desc_text % epoch_avg_loss)
                 train_logs.append([epoch_i, e_time - s_time, epoch_avg_loss])
-
+                tbar.set_description(desc_text % epoch_avg_loss)  # 动态更新loss
+                if epoch_avg_loss < best_loss:
+                    best_loss = epoch_avg_loss
+                    print(f'New best avg loss: {best_loss:.4f} at epoch {epoch_i}, saving best model...')
+                    self.save_models('best')
                 if self.cache_epoches and epoch_i < self.num_epoch - 1:
                     self.save_models(epoch_i)
-                
-                # 满足停止条件，直接返回
-                if epoch_avg_loss <= self.epoch_stop_criteria:
-                    train_logs = pd.DataFrame(train_logs, columns=['epoch', 'time', 'loss'])
-                    return train_logs
-                
         train_logs = pd.DataFrame(train_logs, columns=['epoch', 'time', 'loss'])
         return train_logs
     

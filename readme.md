@@ -336,18 +336,24 @@ cd poi/UniTE-main
 export META_PATH=./cache    
 export DATASET_PATH=../UniTE_h5_dataset   
 
-保存轨迹向量时要在task.py的search的init里面改变保存文件的名字     
-        self.save_path = os.path.join(save_dir, f'foursquare_tky.npz')
+data.py里面有轨迹的长度，对于nyc设置min=3，最大200，其他数据集需要单独查看轨迹长度设置。
+如果是key数据，需要把min变成1，或者这里直接设置min = 1，max = 9999，则对所有轨迹不再单独设置。
+MIN_TRIP_LEN = 1
+MAX_TRIP_LEN = 9999
+
+<!-- 保存轨迹向量时要在task.py的search的init里面改变保存文件的名字     
+        self.save_path = os.path.join(save_dir, f'foursquare_tky.npz') -->
+已经实现自动提取文件名
 
 1. 生成meta数据
-  python data.py -n foursquare_nyc -t trip     
+  python data.py -n nyc -t trip     
   python data.py -n foursquare_tky -t trip      
   作用：由h5生成并保存原始轨迹序列的meta文件（如trip_0.npz、trip_1.npz、trip_2.npz, stat.h5 ）。    
   具体内容：每条轨迹被处理为定长的特征序列（见TRIP_COLS），并保存其有效长度(6-120)、轨迹ID等。   
   用途：模型训练时的主输入，如TransformerEncoder的输入。   
   保存在./cache路径下     
 
-2. 生成对比学习的索引数据, loss不是对比学习的话不用这一步              
+2. 生成对比学习的索引数据, loss不是对比学习的话不用这一步.不是，searchr任务要用到。            
   保存在./cache/meta/foursquare_nyc/目录下        
   python data.py -n foursquare_nyc -t ksegsimidx-100-200 -i 0,1,2     
   python data.py -n foursquare_tky -t ksegsimidx-100-200 -i 0,1,2     
@@ -360,7 +366,7 @@ export DATASET_PATH=../UniTE_h5_dataset
   python main.py -c config/nyc.yaml
   python main.py -c config/tky.yaml      
   (    
-  nohup python main.py -c config/nyc.yaml > nyc.log 2>&1 &    
+  nohup python main.py -c config/nyc.yaml > nyc611.log 2>&1 &    
   nohup python main.py -c config/tky.yaml > tky.log 2>&1 &    
   )
 

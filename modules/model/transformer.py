@@ -180,7 +180,7 @@ class TransformerEncoder(Encoder):
     """
     def __init__(self, d_model, output_size,
                  sampler, dis_feats=[], num_embeds=[], con_feats=[],
-                 num_heads=8, num_layers=2, hidden_size=128):
+                 num_heads=8, num_layers=2, hidden_size=128, dropout=0.1):
         super().__init__(sampler, 'Transformer-' +
                          ','.join(map(str, dis_feats + con_feats)) +
                          f'-d{d_model}-h{hidden_size}-l{num_layers}-h{num_heads}')
@@ -208,7 +208,7 @@ class TransformerEncoder(Encoder):
                                         nn.ReLU(inplace=True),
                                         nn.Linear(output_size, output_size))
 
-        encoder_layer = nn.TransformerEncoderLayer(d_model, num_heads, hidden_size, dropout=0.1, batch_first=True)
+        encoder_layer = nn.TransformerEncoderLayer(d_model, num_heads, hidden_size, dropout=dropout, batch_first=True)
         self.encoder = nn.TransformerEncoder(encoder_layer, num_layers)
 
         self.pre_norm = nn.LayerNorm(self.d_model)

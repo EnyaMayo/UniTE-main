@@ -1137,13 +1137,10 @@ class Data:
             trip_arrs = np.concatenate(all_trips, axis=0)
             valid_lens = np.concatenate(all_lengths, axis=0)
             trip_ids = np.concatenate(all_trip_ids, axis=0)
-            anchor = np.array([-0.5, -0.5])[None, :]
-            min_distances_to_anchor = np.sqrt(((trip_arrs[:, :, [3, 4]] - anchor) ** 2).sum(-1)).min(-1)
-            neg_location_index = min_distances_to_anchor > 1
-            min_distances_to_anchor = np.sqrt(((trip_arrs[:, :, [3, 4]] - anchor) ** 2).sum(-1)).max(-1)
-            qry_location_index = min_distances_to_anchor < 0.5
-            qry_index = np.arange(len(trip_arrs))[qry_location_index]
-            neg_index = np.arange(len(trip_arrs))[neg_location_index]
+
+            # 保持query/target采样不变
+            num_query = min(num_target, len(trip_arrs))
+            qry_index = np.arange(num_query)
             query_trips = trip_arrs[qry_index]
             query_valid_lens = valid_lens[qry_index]
             qry_seg_trips = resample_to_k_segments(query_trips[..., [3, 4]], query_valid_lens, MIN_TRIP_LEN)
@@ -1153,7 +1150,15 @@ class Data:
             tgt_index = qry_index[tgt_index_in_qry]
             qry_index = qry_index[:num_target]
             tgt_index = tgt_index[:num_target]
-            neg_index = neg_index[:num_negative]
+
+            # 负样本采样
+            all_indices = set(range(len(trip_arrs)))
+            neg_candidates = list(all_indices - set(qry_index) - set(tgt_index))
+            if len(neg_candidates) < num_negative:
+                neg_index = np.array(neg_candidates)
+            else:
+                neg_index = np.random.choice(neg_candidates, num_negative, replace=False)
+
             print("Query trip num: {}\nTarget trip num: {}\nNegative trip num: {}"
                   .format(len(qry_index), len(tgt_index), len(neg_index)))
             meta = {
